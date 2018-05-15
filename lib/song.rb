@@ -5,30 +5,30 @@ class Song
       @name = name
     end
 
-    def self.new_by_filename(filename)
-      artist, song = filename.split(" - ")
-      new_song = self.new(song)
-      new_song.artist_name = artist
-      new_song.save
-    end
+    def save
+		@@all << self
+	end
 
-    def self.find_by_artist(artist)
-    Song.all.select do | song |
-      song.artist == artist
-    end
-  end
+	def songs
+		@songs
+	end
 
-  def self.all
-    @@all
-  end
+	def add_song(song)
+		@songs << song
+	end
 
-  def artist_name=(name)
-    self.artist = Artist.find_or_create_by_name(name)
-  end
+	def self.find_or_create_by_name(name)
+		@@all.each  do |artist|
+			if artist.name == name
+				return artist
+			else
+				return self.new(name)
+			end
+		end
+	end
 
-  def save
-    @@all << self
-    self
-  end
+	def self.all
+		@@all
+	end
 
 end
